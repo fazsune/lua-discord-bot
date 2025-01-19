@@ -238,7 +238,7 @@ return function(ENV)
 			local embeds = {
 				title = "Commands List";
 				description = "```~~~ This bot is in active development! ~~~\nIf you would like to make a contribution to the bot, feel free to stop by the GitHub repository linked here: https://github.com/fazsune/lua-discord-bot```\n**Prefix =** `" .. tostring(prefix) .. "`";
-				color = 10747904;
+				color = 9442302;
 				thumbnail = {url = client.user.avatarURL};
 				author = {name = bot_name, icon_url = client.user.avatarURL};
 				fields = {
@@ -254,7 +254,13 @@ return function(ENV)
 			if user_level >= 4 and commands_metadata[4] then
 				table.insert(embeds.fields, {name = "Operator Commands", value = commands_metadata[4]})
 			end
-			message:reply{embed = embeds}
+			local reply = message:reply{embed = embeds}
+			if not reply then
+				embeds.fields = {
+					{name = "Could not retrieve commands!", value = "The current size of the commands metadata exceeds the limit for Discord embeds. This is a bug that will be fixed in the near future."};
+				}
+				message:reply{embed = embeds}
+			end
 		end;
 	}
 
